@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <%-- Подключение общего header --%>
     <jsp:include page="/fragments/header.jsp"/>
 </head>
 <body>

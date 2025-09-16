@@ -8,25 +8,25 @@
     <listener>
         <listener-class>org.example.AppContextListener</listener-class>
     </listener>
-    
-    <!-- DiseaseServlet -->
+
+    <!-- Disease -->
     <servlet>
-        <servlet-name>DiseaseServlet</servlet-name>
-        <servlet-class>org.example.controller.disease.DiseaseServlet</servlet-class>
+        <servlet-name>DiseaseGetServlet</servlet-name>
+        <servlet-class>org.example.controller.disease.DiseaseGetServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>DiseaseServlet</servlet-name>
+        <servlet-name>DiseaseGetServlet</servlet-name>
         <url-pattern>/diseases</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>DiseaseAddServlet</servlet-name>
-        <servlet-class>org.example.controller.disease.DiseaseAddServlet</servlet-class>
+        <servlet-name>DiseaseCreateServlet</servlet-name>
+        <servlet-class>org.example.controller.disease.DiseaseCreateServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>DiseaseAddServlet</servlet-name>
+        <servlet-name>DiseaseCreateServlet</servlet-name>
         <url-pattern>/diseases/add</url-pattern>
     </servlet-mapping>
 
@@ -36,26 +36,36 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>DiseaseUpdateServlet</servlet-name>
-        <url-pattern>/diseases/*</url-pattern>
+        <url-pattern>/diseases/edit/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>SymptomServlet</servlet-name>
-        <servlet-class>org.example.controller.symptom.SymptomServlet</servlet-class>
+        <servlet-name>DiseaseDeleteServlet</servlet-name>
+        <servlet-class>org.example.controller.disease.DiseaseDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DiseaseDeleteServlet</servlet-name>
+        <url-pattern>/diseases/delete/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Symptom -->
+    <servlet>
+        <servlet-name>SymptomGetServlet</servlet-name>
+        <servlet-class>org.example.controller.symptom.SymptomGetServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>SymptomServlet</servlet-name>
+        <servlet-name>SymptomGetServlet</servlet-name>
         <url-pattern>/symptoms</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>SymptomAddServlet</servlet-name>
-        <servlet-class>org.example.controller.symptom.SymptomAddServlet</servlet-class>
+        <servlet-name>SymptomCreateServlet</servlet-name>
+        <servlet-class>org.example.controller.symptom.SymptomCreateServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>SymptomAddServlet</servlet-name>
+        <servlet-name>SymptomCreateServlet</servlet-name>
         <url-pattern>/symptoms/add</url-pattern>
     </servlet-mapping>
 
@@ -65,16 +75,26 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>SymptomUpdateServlet</servlet-name>
-        <url-pattern>/symptoms/*</url-pattern>
+        <url-pattern>/symptoms/edit/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>PharmacyServlet</servlet-name>
-        <servlet-class>org.example.controller.pharmacy.PharmacyServlet</servlet-class>
+        <servlet-name>SymptomDeleteServlet</servlet-name>
+        <servlet-class>org.example.controller.symptom.SymptomDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SymptomDeleteServlet</servlet-name>
+        <url-pattern>/symptoms/delete/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Pharmacy -->
+    <servlet>
+        <servlet-name>PharmacyGetServlet</servlet-name>
+        <servlet-class>org.example.controller.pharmacy.PharmacyGetServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>PharmacyServlet</servlet-name>
+        <servlet-name>PharmacyGetServlet</servlet-name>
         <url-pattern>/pharmacies</url-pattern>
     </servlet-mapping>
 
@@ -85,16 +105,16 @@
 
     <servlet-mapping>
         <servlet-name>PharmacyDetailServlet</servlet-name>
-        <url-pattern>/pharmacies/*</url-pattern>
+        <url-pattern>/pharmacies/detail/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>PharmacyAddServlet</servlet-name>
-        <servlet-class>org.example.controller.pharmacy.PharmacyAddServlet</servlet-class>
+        <servlet-name>PharmacyCreateServlet</servlet-name>
+        <servlet-class>org.example.controller.pharmacy.PharmacyCreateServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>PharmacyAddServlet</servlet-name>
+        <servlet-name>PharmacyCreateServlet</servlet-name>
         <url-pattern>/pharmacies/add</url-pattern>
     </servlet-mapping>
 

@@ -7,13 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import org.example.dto.DiseaseResponse;
 import org.example.dto.MedicationResponse;
 import org.example.entity.Disease;
-import org.example.entity.Symptom;
 import org.example.service.DiseaseService;
 import org.example.service.PharmacyService;
-import org.example.service.SymptomService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,11 +19,10 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @MultipartConfig
-public class PharmacyAddServlet extends HttpServlet {
+public class PharmacyCreateServlet extends HttpServlet {
     private PharmacyService pharmacyService;
     private DiseaseService diseaseService;
 

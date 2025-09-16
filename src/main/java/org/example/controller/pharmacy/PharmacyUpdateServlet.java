@@ -7,10 +7,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import org.example.dto.DiseaseResponse;
 import org.example.dto.MedicationResponse;
 import org.example.entity.Disease;
-import org.example.entity.Symptom;
 import org.example.service.DiseaseService;
 import org.example.service.PharmacyService;
 
@@ -21,9 +19,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @MultipartConfig
 public class PharmacyUpdateServlet extends HttpServlet {
@@ -45,10 +41,9 @@ public class PharmacyUpdateServlet extends HttpServlet {
         this.pharmacyService = (PharmacyService) pharmacy;
     }
 
-    // показать форму
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo(); // например: /3
+        String pathInfo = req.getPathInfo();
 
         if (pathInfo != null && pathInfo.matches("/\\d+")) {
             Long id = Long.parseLong(pathInfo.substring(1));
@@ -74,11 +69,10 @@ public class PharmacyUpdateServlet extends HttpServlet {
         }
     }
 
-    // обработать сохранение
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        String pathInfo = req.getPathInfo(); // /3
+        String pathInfo = req.getPathInfo();
 
         if (pathInfo != null && pathInfo.matches("/\\d+")) {
             Long id = Long.parseLong(pathInfo.substring(1));

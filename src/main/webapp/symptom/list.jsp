@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <%-- Подключение общего header --%>
     <jsp:include page="/fragments/header.jsp" />
 </head>
 <body>
@@ -17,10 +16,10 @@
             <h5 class="fw-bold mb-0">${symptom.name}</h5>
 
             <div class="d-flex gap-2">
-                <a href="${pageContext.request.contextPath}/symptoms/${symptom.id}/edit"
+                <a href="${pageContext.request.contextPath}/symptoms/edit/${symptom.id}"
                    class="btn btn-edit px-4">Редактировать</a>
 
-                <form action="${pageContext.request.contextPath}/symptoms/${symptom.id}/delete"
+                <form action="${pageContext.request.contextPath}/symptoms/delete/${symptom.id}"
                       method="post" class="d-inline">
                     <button type="submit" class="btn btn-delete px-4">Удалить</button>
                 </form>
@@ -50,8 +49,6 @@
         </nav>
     </c:if>
 </div>
-
-<jsp:include page="/fragments/footer.jsp" />
 
 </body>
 </html>

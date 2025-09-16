@@ -10,7 +10,7 @@ import org.example.service.SymptomService;
 
 import java.io.IOException;
 
-public class SymptomAddServlet extends HttpServlet {
+public class SymptomCreateServlet extends HttpServlet {
 
     private SymptomService symptomService;
 
@@ -24,15 +24,13 @@ public class SymptomAddServlet extends HttpServlet {
         this.symptomService = (SymptomService) symptom;
     }
 
-    // показать форму
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/symptom/create.jsp").forward(req, resp);
     }
 
-    // сохранить
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
 
         String name = req.getParameter("name");

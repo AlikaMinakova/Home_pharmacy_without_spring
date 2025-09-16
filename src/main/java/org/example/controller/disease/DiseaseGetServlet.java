@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class DiseaseServlet extends HttpServlet {
+public class DiseaseGetServlet extends HttpServlet {
 
     private DiseaseService diseaseService;
 
@@ -33,7 +33,6 @@ public class DiseaseServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Получаем параметры страницы и размера
             int page = 0;
             int size = 5;
 
@@ -47,21 +46,17 @@ public class DiseaseServlet extends HttpServlet {
                 size = Integer.parseInt(sizeParam);
             }
 
-            // Получаем список болезней (можно сделать постранично вручную)
             List<Disease> diseases = diseaseService.findAll();
 
-            // Если хочешь постранично:
             int fromIndex = Math.min(page * size, diseases.size());
             int toIndex = Math.min(fromIndex + size, diseases.size());
             List<Disease> diseasesPage = diseases.subList(fromIndex, toIndex);
 
-            // Ставим атрибуты для JSP
             req.setAttribute("diseasesPage", diseasesPage);
             req.setAttribute("currentPage", page);
             req.setAttribute("pageSize", size);
             req.setAttribute("totalPages", (int) Math.ceil((double) diseases.size() / size));
 
-            // Передаём управление JSP
             req.getRequestDispatcher("/disease/list.jsp").forward(req, resp);
 
         } catch (SQLException e) {

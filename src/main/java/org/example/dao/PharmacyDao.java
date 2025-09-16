@@ -1,7 +1,6 @@
 package org.example.dao;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.example.dto.DiseaseResponse;
 import org.example.dto.MedicationResponse;
 import org.example.dto.PharmacyOverviewResponse;
 import org.example.dto.PharmacyResponse;
@@ -40,38 +39,8 @@ public class PharmacyDao {
         }
     }
 
-    //    public List<PharmacyResponse> findAll(String sort) throws SQLException {
-//        String sql = "SELECT * FROM pharmacy ORDER BY " + sort;
-//        List<PharmacyResponse> pharmacyResponses = new ArrayList<>();
-//        try (Connection conn = pool.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(sql)) {
-//
-//            PharmacyResponse pharmacyResponse = null;
-//
-//            try (ResultSet rs = ps.executeQuery()) {
-//                while (rs.next()) {
-//                    pharmacyResponse = new PharmacyResponse();
-//                    pharmacyResponse.setId(rs.getLong("id"));
-//                    pharmacyResponse.setQuantity(rs.getInt("quantity"));
-//                    pharmacyResponse.setExpirationDate(LocalDate.parse(rs.getString("expiration_date")));
-//                    pharmacyResponse.setPurchaseDate(LocalDate.parse(rs.getString("purchase_date")));
-//                    pharmacyResponse.setMedication(findMedicationById(rs.getLong("medication_id")));
-//                    pharmacyResponses.add(pharmacyResponse);
-//                }
-//            }
-//        }
-//        return pharmacyResponses;
-//    }
-
-    //    public PharmacyOverviewResponse findOverview(String sort, String keyword) throws SQLException {
-//        List<PharmacyResponse> all = findAll(sort);
-//        List<PharmacyResponse> recentlyBought = findAll( "purchase_date").subList(0, 4);
-//        List<PharmacyResponse> expiringSoon = findAll("expiration_date").subList(0, 4);
-//
-//        return new PharmacyOverviewResponse(all, recentlyBought, expiringSoon);
-//    }
     public List<PharmacyResponse> findAll(String sort, String keyword) throws SQLException {
-        String baseSql = """
+        String sql = """
                 SELECT p.id, p.quantity, p.expiration_date, p.purchase_date, p.medication_id
                 FROM pharmacy p
                 JOIN medication m ON p.medication_id = m.id
@@ -82,7 +51,7 @@ public class PharmacyDao {
         List<PharmacyResponse> pharmacyResponses = new ArrayList<>();
 
         try (Connection conn = pool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(baseSql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             String like = "%" + (keyword == null ? "" : keyword.trim()) + "%";
             ps.setString(1, like);
@@ -108,15 +77,11 @@ public class PharmacyDao {
     }
 
     public PharmacyOverviewResponse findOverview(String sort, String keyword) throws SQLException {
-        // Основной список — с keyword
         List<PharmacyResponse> all = findAll(sort, keyword);
-
-        // Блоки "Купили недавно" и "Заканчивается срок годности" — без keyword
         List<PharmacyResponse> recentlyBought = findAll("purchase_date", null)
                 .stream()
                 .limit(4)
                 .toList();
-
         List<PharmacyResponse> expiringSoon = findAll("expiration_date", null)
                 .stream()
                 .limit(4)
@@ -163,7 +128,6 @@ public class PharmacyDao {
 
             Long medicationId = null;
 
-            // 1. Вставляем лекарство
             try (PreparedStatement ps = conn.prepareStatement(sqlMedication, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, request.getName());
                 ps.setString(2, request.getDescription());
@@ -182,22 +146,20 @@ public class PharmacyDao {
                 throw new SQLException("Не удалось получить id для medication");
             }
 
-            // 2. Вставляем в аптечку (pharmacy)
             try (PreparedStatement ps = conn.prepareStatement(sqlPharmacy, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setLong(1, medicationId);
                 ps.setInt(2, request.getQuantity());
-                ps.setObject(3, request.getExpirationDate()); // LocalDate → java.sql.Date
+                ps.setObject(3, request.getExpirationDate());
                 ps.setObject(4, request.getPurchaseDate());
                 ps.executeUpdate();
 
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
-                        request.setPharmacyId(rs.getLong(1)); // вернём pharmacyId в DTO
+                        request.setPharmacyId(rs.getLong(1));
                     }
                 }
             }
 
-            // 3. Сохраняем связи medication ↔ disease
             if (request.getDiseaseIds() != null && !request.getDiseaseIds().isEmpty()) {
                 try (PreparedStatement ps = conn.prepareStatement(sqlDiseaseLink)) {
                     for (Long diseaseId : request.getDiseaseIds()) {
@@ -230,7 +192,6 @@ public class PharmacyDao {
             conn.setAutoCommit(false);
 
             try {
-                // 1. Обновляем medication
                 try (PreparedStatement ps = conn.prepareStatement(sqlUpdateMedication)) {
                     ps.setString(1, request.getName());
                     ps.setString(2, request.getDescription());
@@ -243,7 +204,6 @@ public class PharmacyDao {
                     ps.executeUpdate();
                 }
 
-                // 2. Обновляем pharmacy
                 try (PreparedStatement ps = conn.prepareStatement(sqlUpdatePharmacy)) {
                     ps.setInt(1, request.getQuantity());
                     ps.setObject(2, request.getExpirationDate());
@@ -252,7 +212,6 @@ public class PharmacyDao {
                     ps.executeUpdate();
                 }
 
-                // 3. Перезаписываем связи болезнь ↔ лекарство
                 try (PreparedStatement psDel = conn.prepareStatement(sqlDeleteDiseaseLinks)) {
                     psDel.setLong(1, request.getId());
                     psDel.executeUpdate();
@@ -290,6 +249,5 @@ public class PharmacyDao {
             ps.executeUpdate();
         }
     }
-
 }
 

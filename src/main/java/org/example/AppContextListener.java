@@ -19,10 +19,8 @@ public class AppContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        // 1. Создаём пул через отдельный класс
         dataSource = DataSourceConfig.createDataSource();
 
-        // 2. Создаём DAO и сервис
         DiseaseDao diseaseDao = new DiseaseDao(dataSource);
         DiseaseService diseaseService = new DiseaseService(diseaseDao);
         SymptomDao symptomDao = new SymptomDao(dataSource);
@@ -30,7 +28,6 @@ public class AppContextListener implements ServletContextListener {
         PharmacyDao pharmacyDao = new PharmacyDao(dataSource);
         PharmacyService pharmacyService = new PharmacyService(pharmacyDao, diseaseDao);
 
-        // 3. Сохраняем в ServletContext
         ServletContext context = sce.getServletContext();
         context.setAttribute("diseaseService", diseaseService);
         context.setAttribute("symptomService", symptomService);
@@ -40,7 +37,7 @@ public class AppContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         if (dataSource != null) {
-            dataSource.close(); // закрываем все соединения пула
+            dataSource.close();
         }
     }
 }

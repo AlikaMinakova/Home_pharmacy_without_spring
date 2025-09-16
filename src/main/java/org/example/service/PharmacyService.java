@@ -7,8 +7,6 @@ import org.example.dao.PharmacyDao;
 import org.example.dto.DiseaseResponse;
 import org.example.dto.MedicationResponse;
 import org.example.dto.PharmacyOverviewResponse;
-import org.example.dto.PharmacyResponse;
-import org.example.entity.Disease;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class PharmacyService {
         MedicationResponse medicationResponse = pharmacyDao.findMedicationDetailByPharmacyId(id);
         List<Long> ids = diseaseDao.findDiseasesIdByMedicationId(medicationResponse.getId());
         List<DiseaseResponse> diseaseResponses = new ArrayList<>();
-        for (Long idDisease : ids){
+        for (Long idDisease : ids) {
             diseaseResponses.add(diseaseDao.findById(idDisease));
         }
         medicationResponse.setDiseaseResponses(diseaseResponses);

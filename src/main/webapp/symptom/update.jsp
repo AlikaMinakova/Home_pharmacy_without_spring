@@ -2,14 +2,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <%-- Подключение общего header --%>
     <jsp:include page="/fragments/header.jsp" />
 </head>
 <body>
 <div class="container my-5 content">
 <h3 class="fw-bold mb-4">Редактировать симптом</h3>
 
-<form action="${pageContext.request.contextPath}/symptoms/${symptom.id}" method="post" class="w-100">
+<form action="${pageContext.request.contextPath}/symptoms/edit/${symptom.id}" method="post" class="w-100">
     <input type="hidden" name="id" value="${symptom.id}"/>
 
     <div class="mb-3">

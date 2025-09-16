@@ -13,11 +13,9 @@ public class MainApplication {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(PORT);
 
-        // Указываем папку с web.xml
-        String webAppDir = "src/main/webapp"; // тут должен быть WEB-INF/web.xml
+        String webAppDir = "src/main/webapp";
         File webApp = new File(webAppDir);
 
-        // contextPath = "" → доступ по http://localhost:8080/
         Context ctx = tomcat.addWebapp("", webApp.getAbsolutePath());
 
         tomcat.getConnector();

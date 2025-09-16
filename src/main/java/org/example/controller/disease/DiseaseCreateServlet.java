@@ -1,8 +1,8 @@
 package org.example.controller.disease;
 
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.DiseaseResponse;
@@ -12,9 +12,10 @@ import org.example.service.SymptomService;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DiseaseAddServlet extends HttpServlet {
+public class DiseaseCreateServlet extends HttpServlet {
 
 
     private DiseaseService diseaseService;
@@ -35,7 +36,6 @@ public class DiseaseAddServlet extends HttpServlet {
         this.symptomService = (SymptomService) symptom;
     }
 
-    // показать форму
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Symptom> symptoms = null;
@@ -48,7 +48,6 @@ public class DiseaseAddServlet extends HttpServlet {
         req.getRequestDispatcher("/disease/create.jsp").forward(req, resp);
     }
 
-    // обработать сохранение
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");

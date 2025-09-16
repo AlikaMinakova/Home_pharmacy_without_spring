@@ -26,21 +26,22 @@ public class PharmacyDeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
-        String pathInfo = req.getPathInfo(); // например: /3
-        if (pathInfo == null || !pathInfo.matches("/\\d+")) {
+        String pathInfo = req.getPathInfo();
+        if (pathInfo != null && pathInfo.matches("/\\d+")) {
+
+
+            Long id = Long.parseLong(pathInfo.substring(1));
+
+            try {
+                pharmacyService.delete(id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            resp.sendRedirect(req.getContextPath() + "/pharmacies");
+        } else {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Некорректный id");
-            return;
         }
-
-        Long id = Long.parseLong(pathInfo.substring(1));
-
-        try {
-            pharmacyService.delete(id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        resp.sendRedirect(req.getContextPath() + "/pharmacies");
     }
 }

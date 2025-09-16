@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @RequiredArgsConstructor
-public class PharmacyServlet extends HttpServlet {
+public class PharmacyGetServlet extends HttpServlet {
 
     private PharmacyService pharmacyService;
 

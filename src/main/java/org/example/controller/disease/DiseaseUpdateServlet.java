@@ -24,54 +24,42 @@ public class DiseaseUpdateServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        Object disease = config.getServletContext().getAttribute("diseaseService");
-        Object symptom = config.getServletContext().getAttribute("symptomService");
-        if (!(disease instanceof DiseaseService)) {
-            throw new ServletException("DiseaseService not initialized");
+        this.diseaseService = (DiseaseService) config.getServletContext().getAttribute("diseaseService");
+        this.symptomService = (SymptomService) config.getServletContext().getAttribute("symptomService");
+        if (diseaseService == null || symptomService == null) {
+            throw new ServletException("Services not initialized");
         }
-        if (!(symptom instanceof SymptomService)) {
-            throw new ServletException("SymptomService not initialized");
-        }
-        this.diseaseService = (DiseaseService) disease;
-        this.symptomService = (SymptomService) symptom;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo(); // например /5/edit
+        String pathInfo = req.getPathInfo();
 
-        if (pathInfo != null && pathInfo.matches("/\\d+/edit")) {
+        if (pathInfo != null && pathInfo.matches("/\\d+")) {
             Long id = Long.parseLong(pathInfo.split("/")[1]);
-            DiseaseResponse disease = null;
             try {
-                disease = diseaseService.findById(id);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            List<Symptom> symptoms = null;
-            try {
-                symptoms = symptomService.findAll();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+                DiseaseResponse disease = diseaseService.findById(id);
+                List<Symptom> symptoms = symptomService.findAll();
 
-            req.setAttribute("disease", disease);
-            req.setAttribute("symptoms", symptoms);
+                req.setAttribute("disease", disease);
+                req.setAttribute("symptoms", symptoms);
 
-            req.getRequestDispatcher("/disease/update.jsp").forward(req, resp);
+                req.getRequestDispatcher("/disease/update.jsp").forward(req, resp);
+            } catch (SQLException e) {
+                throw new ServletException("Ошибка загрузки болезни", e);
+            }
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String pathInfo = req.getPathInfo();
 
         if (pathInfo != null && pathInfo.matches("/\\d+")) {
-            // обновление болезни
-            Long id = Long.parseLong(pathInfo.substring(1));
+            Long id = Long.parseLong(pathInfo.split("/")[1]);
 
             String name = req.getParameter("name");
             String description = req.getParameter("description");
@@ -89,17 +77,7 @@ public class DiseaseUpdateServlet extends HttpServlet {
             try {
                 diseaseService.update(id, diseaseRequest);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            resp.sendRedirect(req.getContextPath() + "/diseases");
-        } else if (pathInfo != null && pathInfo.matches("/\\d+/delete")) {
-            // удаление болезни
-            Long id = Long.parseLong(pathInfo.split("/")[1]);
-            try {
-                diseaseService.delete(id);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new ServletException("Ошибка при обновлении болезни", e);
             }
 
             resp.sendRedirect(req.getContextPath() + "/diseases");

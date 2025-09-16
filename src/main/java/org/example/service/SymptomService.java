@@ -27,9 +27,6 @@ public class SymptomService {
         symptomDao.save(request);
     }
 
-    public Symptom getSymptom(Long id) {
-        return symptomDao.findById(id);
-    }
 
     public void updateSymptom(Long id, SymptomResponse request) {
         symptomDao.update(id, request);

@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <%-- Подключение общего header --%>
     <jsp:include page="/fragments/header.jsp" />
 </head>
 <body>
@@ -12,7 +11,7 @@
 
 <h3 class="fw-bold mb-4">Редактировать болезнь</h3>
 
-<form action="${pageContext.request.contextPath}/diseases/${disease.id}"
+<form action="${pageContext.request.contextPath}/diseases/edit/${disease.id}"
       method="post" class="w-100">
 
     <input type="hidden" name="id" value="${disease.id}"/>

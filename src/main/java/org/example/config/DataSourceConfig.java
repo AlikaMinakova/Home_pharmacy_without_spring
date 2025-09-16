@@ -13,7 +13,6 @@ public class DataSourceConfig {
 
         try {
             Properties props = new Properties();
-            // используем ClassLoader для статического метода
             try (InputStream is = DataSourceConfig.class.getClassLoader()
                     .getResourceAsStream("application.properties")) {
                 if (is == null) throw new RuntimeException("application.properties not found in classpath");

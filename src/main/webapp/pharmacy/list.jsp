@@ -3,7 +3,6 @@
 
 <html lang="ru">
 <head>
-    <%-- Подключение общего header --%>
     <jsp:include page="/fragments/header.jsp"/>
 </head>
 <body>
@@ -35,7 +34,7 @@
                     <div class="card-body">
                         <p class="text-success small fw-semibold">Есть в аптечке</p>
                         <h6 class="fw-bold">
-                            <a href="${pageContext.request.contextPath}/pharmacies/${pharmacy.id}"
+                            <a href="${pageContext.request.contextPath}/pharmacies/detail/${pharmacy.id}"
                                class="text-decoration-none text-dark">
                                     ${pharmacy.medication.name}
                             </a>
@@ -55,8 +54,6 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center mt-4">
 
-                <!-- Кнопка "назад" -->
-                <!-- Кнопка "назад" -->
                 <li class="page-item ${currentPage == 0 ? 'disabled' : ''}">
                     <a class="page-link"
                        href="?page=${currentPage - 1}&size=${pageSize}&sort=${sort}&keyword=${keyword}">‹</a>
@@ -65,7 +62,6 @@
                 <c:set var="start" value="${currentPage - 2 lt 0 ? 0 : currentPage - 2}" />
                 <c:set var="end" value="${currentPage + 2 gt totalPages - 1 ? totalPages - 1 : currentPage + 2}" />
 
-                <!-- Всегда первая страница -->
                 <c:if test="${start > 0}">
                     <li class="page-item">
                         <a class="page-link"
@@ -76,7 +72,6 @@
                     </c:if>
                 </c:if>
 
-                <!-- Страницы вокруг текущей -->
                 <c:forEach var="i" begin="${start}" end="${end}">
                     <li class="page-item ${i == currentPage ? 'active' : ''}">
                         <a class="page-link"
@@ -84,7 +79,6 @@
                     </li>
                 </c:forEach>
 
-                <!-- Последняя страница -->
                 <c:if test="${end < totalPages - 1}">
                     <c:if test="${end < totalPages - 2}">
                         <li class="page-item disabled"><span class="page-link">...</span></li>
@@ -97,7 +91,6 @@
                     </li>
                 </c:if>
 
-                <!-- Кнопка "вперёд" -->
                 <li class="page-item ${currentPage == totalPages - 1 ? 'disabled' : ''}">
                     <a class="page-link"
                        href="?page=${currentPage + 1}&size=${pageSize}&sort=${sort}&keyword=${keyword}">›</a>
@@ -119,7 +112,7 @@
                     <div class="card-body">
                         <p class="text-success small fw-semibold">Есть в аптечке</p>
                         <h6 class="fw-bold">
-                            <a href="${pageContext.request.contextPath}/pharmacies/${pharmacy.id}"
+                            <a href="${pageContext.request.contextPath}/pharmacies/detail/${pharmacy.id}"
                                class="text-decoration-none text-dark">
                                     ${pharmacy.medication.name}
                             </a>
@@ -148,7 +141,7 @@
                     <div class="card-body">
                         <p class="text-success small fw-semibold">Есть в аптечке</p>
                         <h6 class="fw-bold">
-                            <a href="${pageContext.request.contextPath}/pharmacies/${pharmacy.id}"
+                            <a href="${pageContext.request.contextPath}/pharmacies/detail/${pharmacy.id}"
                                class="text-decoration-none text-dark">
                                     ${pharmacy.medication.name}
                             </a>

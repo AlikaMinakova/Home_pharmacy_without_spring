@@ -26,7 +26,7 @@ public class PharmacyDetailServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo(); // например: /5
+        String pathInfo = req.getPathInfo();
         if (pathInfo == null || pathInfo.length() <= 1) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;

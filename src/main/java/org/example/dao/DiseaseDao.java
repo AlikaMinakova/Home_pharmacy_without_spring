@@ -91,7 +91,6 @@ public class DiseaseDao {
             conn.setAutoCommit(false);
 
             DiseaseResponse d = null;
-            // основная информация о болезни
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setLong(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -107,7 +106,6 @@ public class DiseaseDao {
                 return null;
             }
 
-            // симптомы
             try (PreparedStatement ps = conn.prepareStatement(sqlSymptoms)) {
                 ps.setLong(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -138,13 +136,11 @@ public class DiseaseDao {
                 ps.executeUpdate();
             }
 
-            // чистим старые связи
             try (PreparedStatement ps = conn.prepareStatement("DELETE FROM disease_symptom WHERE disease_id = ?")) {
                 ps.setLong(1, id);
                 ps.executeUpdate();
             }
 
-            // добавляем новые связи
             if (disease.getSymptomIds() != null && !disease.getSymptomIds().isEmpty()) {
                 String insert = "INSERT INTO disease_symptom (disease_id, symptom_id) VALUES (?, ?)";
                 try (PreparedStatement ps = conn.prepareStatement(insert)) {

@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class SymptomServlet extends HttpServlet {
+public class SymptomGetServlet extends HttpServlet {
 
     private SymptomService symptomService;
 
@@ -34,7 +34,6 @@ public class SymptomServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Получаем параметры страницы и размера
             int page = 0;
             int size = 5;
 
@@ -50,18 +49,15 @@ public class SymptomServlet extends HttpServlet {
 
             List<Symptom> symptoms = symptomService.findAll();
 
-            // Если хочешь постранично:
             int fromIndex = Math.min(page * size, symptoms.size());
             int toIndex = Math.min(fromIndex + size, symptoms.size());
             List<Symptom> symptomsPage = symptoms.subList(fromIndex, toIndex);
 
-            // Ставим атрибуты для JSP
             req.setAttribute("symptomsPage", symptomsPage);
             req.setAttribute("currentPage", page);
             req.setAttribute("pageSize", size);
             req.setAttribute("totalPages", (int) Math.ceil((double) symptoms.size() / size));
 
-            // Передаём управление JSP
             req.getRequestDispatcher("/symptom/list.jsp").forward(req, resp);
 
         } catch (SQLException e) {
