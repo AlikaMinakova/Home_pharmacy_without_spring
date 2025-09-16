@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+
+<div th:replace="fragments/header :: body"></div>
+
+<div class="container my-5">
+
+    <h3 class="fw-bold mb-4" th:text="${medication.name}"></h3>
+
+    <div class="row">
+
+        <div class="col-md-4 text-center">
+            <img th:if="${medication.image != null}"
+                 th:src="@{${medication.image}}"
+                 class="img-thumbnail"
+                 alt="Фото лекарства">
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end gap-2 mb-3">
+
+                <a th:href="@{/pharmacies/{id}(id=${pharmacy.id})}"
+                   class="btn btn-edit px-4">Редактировать</a>
+
+
+                <form th:action="@{/pharmacies/{id}/delete(id=${pharmacy.medication.id})}"
+                      method="post" class="d-inline">
+                    <button type="submit" class="btn btn-delete px-4">Удалить</button>
+                </form>
+            </div>
+
+
+            <div class="card p-3 mb-4 shadow-sm">
+                <h6 class="fw-bold">Основное</h6>
+                <ul class="list-unstyled small">
+                    <li th:text="'Описание: ' + ${pharmacy.medicationDescription}"></li>
+                    <li th:text="'Осталось: ' + ${pharmacy.quantity} + ' шт'"></li>
+                    <li th:text="'Дата покупки: ' + ${pharmacy.purchaseDate}"></li>
+                    <li th:text="'Срок годности: ' + ${pharmacy.expirationDate}"></li>
+                </ul>
+            </div>
+
+            <div class="card p-3 shadow-sm">
+                <h6 class="fw-bold">От чего</h6>
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th>Болезни</th>
+                        <th>Симптомы</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="disease : ${medication.diseases}">
+                        <td th:text="${disease.name}"></td>
+                        <td>
+                          <span th:each="symptom, stat : ${disease.symptoms}"
+                                th:text="${symptom.name + (stat.last ? '' : ', ')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer bg-primary text-center py-4">
+    <div th:replace="fragments/footer :: footer"></div>
+</footer>
+
+
+</body>
+</html>
