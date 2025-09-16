@@ -5,8 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.service.DiseaseService;
-import org.example.dto.SymptomRequest;
+import org.example.dto.SymptomResponse;
 import org.example.service.SymptomService;
 
 import java.io.IOException;
@@ -38,10 +37,10 @@ public class SymptomAddServlet extends HttpServlet {
 
         String name = req.getParameter("name");
 
-        SymptomRequest symptomRequest = new SymptomRequest();
-        symptomRequest.setName(name);
+        SymptomResponse symptomResponse = new SymptomResponse();
+        symptomResponse.setName(name);
 
-        symptomService.save(symptomRequest);
+        symptomService.save(symptomResponse);
 
         resp.sendRedirect(req.getContextPath() + "/symptoms");
     }

@@ -28,7 +28,7 @@ public class AppContextListener implements ServletContextListener {
         SymptomDao symptomDao = new SymptomDao(dataSource);
         SymptomService symptomService = new SymptomService(symptomDao);
         PharmacyDao pharmacyDao = new PharmacyDao(dataSource);
-        PharmacyService pharmacyService = new PharmacyService(pharmacyDao);
+        PharmacyService pharmacyService = new PharmacyService(pharmacyDao, diseaseDao);
 
         // 3. Сохраняем в ServletContext
         ServletContext context = sce.getServletContext();

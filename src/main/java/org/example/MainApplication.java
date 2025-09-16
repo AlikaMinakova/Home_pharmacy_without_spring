@@ -22,7 +22,7 @@ public class MainApplication {
 
         tomcat.getConnector();
 
-        System.out.println("Starting Tomcat on http://localhost:" + PORT + "/symptoms");
+        System.out.println("Starting Tomcat on http://localhost:" + PORT + "/pharmacies");
 
         tomcat.start();
         tomcat.getServer().await();

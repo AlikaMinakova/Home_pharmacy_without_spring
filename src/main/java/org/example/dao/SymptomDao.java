@@ -1,8 +1,7 @@
 package org.example.dao;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.example.dto.SymptomRequest;
-import org.example.entity.Disease;
+import org.example.dto.SymptomResponse;
 import org.example.entity.Symptom;
 
 import java.sql.Connection;
@@ -33,7 +32,7 @@ public class SymptomDao {
         }
     }
 
-    public void save(SymptomRequest request) {
+    public void save(SymptomResponse request) {
         String sql = "INSERT INTO symptom (name) VALUES (?)";
 
         try (Connection conn = pool.getConnection();
@@ -67,7 +66,7 @@ public class SymptomDao {
         return null;
     }
 
-    public void update(Long id, SymptomRequest request) {
+    public void update(Long id, SymptomResponse request) {
         String sql = "UPDATE symptom SET name = ? WHERE id = ?";
         try (Connection conn = pool.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

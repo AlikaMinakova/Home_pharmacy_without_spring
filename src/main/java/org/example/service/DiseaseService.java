@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.dao.DiseaseDao;
-import org.example.dto.DiseaseRequest;
+import org.example.dto.DiseaseResponse;
 import org.example.entity.Disease;
 
 import java.sql.SQLException;
@@ -21,16 +21,16 @@ public class DiseaseService {
         return diseaseDao.findAll();
     }
 
-    public void save(DiseaseRequest entity) {
+    public void save(DiseaseResponse entity) {
         diseaseDao.save(entity);
     }
 
-    public DiseaseRequest findById(Long id) throws SQLException {
+    public DiseaseResponse findById(Long id) throws SQLException {
         return diseaseDao.findById(id);
     }
 
 
-    public void update(Long id, DiseaseRequest request) throws SQLException {
+    public void update(Long id, DiseaseResponse request) throws SQLException {
         diseaseDao.update(id, request);
     }
 

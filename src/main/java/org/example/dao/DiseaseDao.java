@@ -1,13 +1,12 @@
 package org.example.dao;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.example.dto.DiseaseRequest;
+import org.example.dto.DiseaseResponse;
+import org.example.dto.SymptomResponse;
 import org.example.entity.Disease;
-import org.example.entity.Symptom;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class DiseaseDao {
@@ -15,6 +14,23 @@ public class DiseaseDao {
 
     public DiseaseDao(DataSource pool) {
         this.pool = pool;
+    }
+
+    public List<Long> findDiseasesIdByMedicationId(Long id) throws SQLException {
+        String sql = "SELECT disease_id FROM medication_disease WHERE medication_id = ?";
+        try (Connection conn = pool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Long> list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(rs.getLong("disease_id"));
+                }
+                return list;
+            }
+        }
     }
 
     public List<Disease> findAll() throws SQLException {
@@ -32,7 +48,7 @@ public class DiseaseDao {
         }
     }
 
-    public void save(DiseaseRequest request) {
+    public void save(DiseaseResponse request) {
         String sqlDisease = "INSERT INTO disease (name, description) VALUES (?, ?)";
         String sqlSymptomLink = "INSERT INTO disease_symptom (disease_id, symptom_id) VALUES (?, ?)";
 
@@ -67,30 +83,28 @@ public class DiseaseDao {
         }
     }
 
-    public DiseaseRequest findById(Long id) throws SQLException {
+    public DiseaseResponse findById(Long id) throws SQLException {
         String sql = "SELECT id, name, description FROM disease WHERE id = ?";
-        String sqlSymptoms = "SELECT symptom_id FROM disease_symptom WHERE disease_id = ?";
+        String sqlSymptoms = "SELECT s.id, s.name FROM disease_symptom ds JOIN symptom s ON ds.symptom_id = s.id  WHERE ds.disease_id = ?";
 
         try (Connection conn = pool.getConnection()) {
             conn.setAutoCommit(false);
 
-            DiseaseRequest d = null;
-
+            DiseaseResponse d = null;
             // основная информация о болезни
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setLong(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        d = new DiseaseRequest();
+                        d = new DiseaseResponse();
                         d.setId(rs.getLong("id"));
                         d.setName(rs.getString("name"));
                         d.setDescription(rs.getString("description"));
                     }
                 }
             }
-
             if (d == null) {
-                return null; // болезни с таким id нет
+                return null;
             }
 
             // симптомы
@@ -98,9 +112,12 @@ public class DiseaseDao {
                 ps.setLong(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     List<Long> symptomIds = new ArrayList<>();
+                    List<SymptomResponse> symptoms = new ArrayList<>();
                     while (rs.next()) {
-                        symptomIds.add(rs.getLong("symptom_id"));
+                        symptoms.add(new SymptomResponse(rs.getLong("id"), rs.getString("name")));
+                        symptomIds.add(rs.getLong("id"));
                     }
+                    d.setSymptomsResponses(symptoms);
                     d.setSymptomIds(symptomIds);
                 }
             }
@@ -110,8 +127,7 @@ public class DiseaseDao {
         }
     }
 
-
-    public void update(Long id, DiseaseRequest disease) throws SQLException {
+    public void update(Long id, DiseaseResponse disease) throws SQLException {
         String sql = "UPDATE disease SET name = ?, description = ? WHERE id = ?";
         try (Connection conn = pool.getConnection()) {
             conn.setAutoCommit(false);
@@ -132,9 +148,9 @@ public class DiseaseDao {
             if (disease.getSymptomIds() != null && !disease.getSymptomIds().isEmpty()) {
                 String insert = "INSERT INTO disease_symptom (disease_id, symptom_id) VALUES (?, ?)";
                 try (PreparedStatement ps = conn.prepareStatement(insert)) {
-                    for (long symptom_id : disease.getSymptomIds()) {
+                    for (Long symptomId : disease.getSymptomIds()) {
                         ps.setLong(1, id);
-                        ps.setLong(2, symptom_id);
+                        ps.setLong(2, symptomId);
                         ps.addBatch();
                     }
                     ps.executeBatch();

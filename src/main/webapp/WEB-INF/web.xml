@@ -78,4 +78,14 @@
         <url-pattern>/pharmacies</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>PharmacyDetailServlet</servlet-name>
+        <servlet-class>org.example.controller.pharmacy.PharmacyDetailServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PharmacyDetailServlet</servlet-name>
+        <url-pattern>/pharmacies/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

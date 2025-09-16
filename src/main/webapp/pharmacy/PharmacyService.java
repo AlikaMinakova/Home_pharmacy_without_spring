@@ -36,7 +36,6 @@ public class PharmacyService {
             diseaseResponses.add(diseaseDao.findById(idDisease));
         }
         medicationResponse.setDiseaseResponses(diseaseResponses);
-        System.out.println(medicationResponse.getDiseaseResponses());
         return medicationResponse;
     }
 

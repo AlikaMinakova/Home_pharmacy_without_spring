@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.DiseaseRequest;
+import org.example.dto.DiseaseResponse;
 import org.example.entity.Symptom;
 import org.example.service.DiseaseService;
 import org.example.service.SymptomService;
@@ -42,7 +42,7 @@ public class DiseaseUpdateServlet extends HttpServlet {
 
         if (pathInfo != null && pathInfo.matches("/\\d+/edit")) {
             Long id = Long.parseLong(pathInfo.split("/")[1]);
-            DiseaseRequest disease = null;
+            DiseaseResponse disease = null;
             try {
                 disease = diseaseService.findById(id);
             } catch (SQLException e) {
@@ -81,7 +81,7 @@ public class DiseaseUpdateServlet extends HttpServlet {
                     ? Arrays.stream(symptomIds).map(Long::parseLong).collect(Collectors.toList())
                     : List.of();
 
-            DiseaseRequest diseaseRequest = new DiseaseRequest();
+            DiseaseResponse diseaseRequest = new DiseaseResponse();
             diseaseRequest.setName(name);
             diseaseRequest.setDescription(description);
             diseaseRequest.setSymptomIds(symptomList);

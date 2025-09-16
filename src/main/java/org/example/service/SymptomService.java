@@ -1,11 +1,7 @@
 package org.example.service;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.example.dao.DiseaseDao;
 import org.example.dao.SymptomDao;
-import org.example.dto.SymptomRequest;
-import org.example.entity.Disease;
+import org.example.dto.SymptomResponse;
 import org.example.entity.Symptom;
 
 import java.sql.SQLException;
@@ -27,7 +23,7 @@ public class SymptomService {
         return symptomDao.findAll();
     }
 
-    public void save(SymptomRequest request) {
+    public void save(SymptomResponse request) {
         symptomDao.save(request);
     }
 
@@ -35,7 +31,7 @@ public class SymptomService {
         return symptomDao.findById(id);
     }
 
-    public void updateSymptom(Long id, SymptomRequest request) {
+    public void updateSymptom(Long id, SymptomResponse request) {
         symptomDao.update(id, request);
     }
 

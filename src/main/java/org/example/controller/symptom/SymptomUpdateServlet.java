@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.SymptomRequest;
+import org.example.dto.SymptomResponse;
 import org.example.entity.Symptom;
 import org.example.service.SymptomService;
 
@@ -55,10 +55,10 @@ public class SymptomUpdateServlet extends HttpServlet {
             Long id = Long.parseLong(pathInfo.substring(1));
 
             String name = req.getParameter("name");
-            SymptomRequest symptomRequest = new SymptomRequest();
-            symptomRequest.setName(name);
+            SymptomResponse symptomResponse = new SymptomResponse();
+            symptomResponse.setName(name);
 
-            symptomService.updateSymptom(id, symptomRequest);
+            symptomService.updateSymptom(id, symptomResponse);
             resp.sendRedirect(req.getContextPath() + "/symptoms");
         } else if (pathInfo != null && pathInfo.matches("/\\d+/delete")) {
             // удаление

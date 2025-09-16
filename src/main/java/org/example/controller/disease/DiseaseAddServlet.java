@@ -5,7 +5,7 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.DiseaseRequest;
+import org.example.dto.DiseaseResponse;
 import org.example.entity.Symptom;
 import org.example.service.DiseaseService;
 import org.example.service.SymptomService;
@@ -64,12 +64,12 @@ public class DiseaseAddServlet extends HttpServlet {
             }
         }
 
-        DiseaseRequest diseaseRequest = new DiseaseRequest();
-        diseaseRequest.setName(name);
-        diseaseRequest.setDescription(description);
-        diseaseRequest.setSymptomIds(symptomIds);
+        DiseaseResponse diseaseResponse = new DiseaseResponse();
+        diseaseResponse.setName(name);
+        diseaseResponse.setDescription(description);
+        diseaseResponse.setSymptomIds(symptomIds);
 
-        diseaseService.save(diseaseRequest);
+        diseaseService.save(diseaseResponse);
 
         resp.sendRedirect(req.getContextPath() + "/diseases");
     }
