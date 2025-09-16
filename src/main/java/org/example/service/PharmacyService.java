@@ -36,16 +36,20 @@ public class PharmacyService {
             diseaseResponses.add(diseaseDao.findById(idDisease));
         }
         medicationResponse.setDiseaseResponses(diseaseResponses);
-        System.out.println(medicationResponse.getDiseaseResponses());
+        medicationResponse.setDiseaseIds(ids);
         return medicationResponse;
     }
 
 
-    public PharmacyResponse save(PharmacyResponse entity) {
-        return null;
+    public void save(MedicationResponse entity) {
+        pharmacyDao.save(entity);
     }
 
-    public void delete(Long aLong) {
+    public void update(MedicationResponse entity) {
+        pharmacyDao.update(entity);
+    }
 
+    public void delete(Long id) throws SQLException {
+        pharmacyDao.delete(id);
     }
 }

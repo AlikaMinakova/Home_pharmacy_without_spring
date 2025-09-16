@@ -88,4 +88,34 @@
         <url-pattern>/pharmacies/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>PharmacyAddServlet</servlet-name>
+        <servlet-class>org.example.controller.pharmacy.PharmacyAddServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PharmacyAddServlet</servlet-name>
+        <url-pattern>/pharmacies/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PharmacyUpdateServlet</servlet-name>
+        <servlet-class>org.example.controller.pharmacy.PharmacyUpdateServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PharmacyUpdateServlet</servlet-name>
+        <url-pattern>/pharmacies/edit/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PharmacyDeleteServlet</servlet-name>
+        <servlet-class>org.example.controller.pharmacy.PharmacyDeleteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PharmacyDeleteServlet</servlet-name>
+        <url-pattern>/pharmacies/delete/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -25,10 +25,10 @@
         <div class="col-md-6">
             <div class="d-flex justify-content-end gap-2 mb-3">
 
-                <a href="${pageContext.request.contextPath}/pharmacies/${medication.pharmacyId}"
+                <a href="${pageContext.request.contextPath}/pharmacies/edit/${medication.pharmacyId}"
                    class="btn btn-edit px-4">Редактировать</a>
 
-                <form action="${pageContext.request.contextPath}/pharmacies/${medication.id}/delete"
+                <form action="${pageContext.request.contextPath}/pharmacies/delete/${medication.id}"
                       method="post" class="d-inline">
                     <button type="submit" class="btn btn-delete px-4">Удалить</button>
                 </form>

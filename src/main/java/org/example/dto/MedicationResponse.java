@@ -22,4 +22,5 @@ public class MedicationResponse {
     private LocalDate expirationDate;
     private LocalDate purchaseDate;
     private List<DiseaseResponse> diseaseResponses;
+    private List<Long> diseaseIds;
 }

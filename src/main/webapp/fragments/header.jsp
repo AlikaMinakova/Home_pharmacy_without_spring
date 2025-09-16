@@ -24,7 +24,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="medDropdown">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/pharmacies">Список лекарств</a></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/pharmacies/new">Добавить лекарство</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/pharmacies/add">Добавить лекарство</a></li>
                 </ul>
             </div>
 
@@ -35,7 +35,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="disDropdown">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/diseases">Список болезней</a></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/diseases/new">Добавить болезнь</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/diseases/add">Добавить болезнь</a></li>
                 </ul>
             </div>
 
@@ -46,7 +46,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="symDropdown">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/symptoms">Список симптомов</a></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/symptoms/new">Добавить симптом</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/symptoms/add">Добавить симптом</a></li>
                 </ul>
             </div>
         </div>

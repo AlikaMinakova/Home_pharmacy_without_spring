@@ -15,8 +15,8 @@
         <span class="fw-semibold">СОРТИРОВАТЬ:</span>
         <form action="${pageContext.request.contextPath}/pharmacies" method="get" class="ms-3">
             <select name="sort" class="form-select w-auto" onchange="this.form.submit()">
-                <option value="purchaseDate" ${sort == 'purchaseDate' ? 'selected' : ''}>По дате покупки</option>
-                <option value="expirationDate" ${sort == 'expirationDate' ? 'selected' : ''}>По сроку годности</option>
+                <option value="purchase_date" ${sort == 'purchase_date' ? 'selected' : ''}>По дате покупки</option>
+                <option value="expiration_date" ${sort == 'expiration_date' ? 'selected' : ''}>По сроку годности</option>
                 <option value="quantity" ${sort == 'quantity' ? 'selected' : ''}>По количеству</option>
             </select>
             <input type="hidden" name="keyword" value="${keyword}">
