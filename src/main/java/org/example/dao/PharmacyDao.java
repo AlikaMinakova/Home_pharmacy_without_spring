@@ -40,23 +40,65 @@ public class PharmacyDao {
         }
     }
 
-    public List<PharmacyResponse> findAll(int page, int size, String sort) throws SQLException {
-        String sql = "SELECT * FROM pharmacy ORDER BY " + sort + " LIMIT ? OFFSET ?";
-        List<PharmacyResponse> pharmacyResponses = new ArrayList<>();
-        try (Connection conn = pool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, size);
-            ps.setInt(2, page * size);
+    //    public List<PharmacyResponse> findAll(String sort) throws SQLException {
+//        String sql = "SELECT * FROM pharmacy ORDER BY " + sort;
+//        List<PharmacyResponse> pharmacyResponses = new ArrayList<>();
+//        try (Connection conn = pool.getConnection();
+//             PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            PharmacyResponse pharmacyResponse = null;
+//
+//            try (ResultSet rs = ps.executeQuery()) {
+//                while (rs.next()) {
+//                    pharmacyResponse = new PharmacyResponse();
+//                    pharmacyResponse.setId(rs.getLong("id"));
+//                    pharmacyResponse.setQuantity(rs.getInt("quantity"));
+//                    pharmacyResponse.setExpirationDate(LocalDate.parse(rs.getString("expiration_date")));
+//                    pharmacyResponse.setPurchaseDate(LocalDate.parse(rs.getString("purchase_date")));
+//                    pharmacyResponse.setMedication(findMedicationById(rs.getLong("medication_id")));
+//                    pharmacyResponses.add(pharmacyResponse);
+//                }
+//            }
+//        }
+//        return pharmacyResponses;
+//    }
 
-            PharmacyResponse pharmacyResponse = null;
+    //    public PharmacyOverviewResponse findOverview(String sort, String keyword) throws SQLException {
+//        List<PharmacyResponse> all = findAll(sort);
+//        List<PharmacyResponse> recentlyBought = findAll( "purchase_date").subList(0, 4);
+//        List<PharmacyResponse> expiringSoon = findAll("expiration_date").subList(0, 4);
+//
+//        return new PharmacyOverviewResponse(all, recentlyBought, expiringSoon);
+//    }
+    public List<PharmacyResponse> findAll(String sort, String keyword) throws SQLException {
+        String baseSql = """
+                SELECT p.id, p.quantity, p.expiration_date, p.purchase_date, p.medication_id
+                FROM pharmacy p
+                JOIN medication m ON p.medication_id = m.id
+                WHERE m.name ILIKE ? OR m.description ILIKE ?
+                ORDER BY %s
+                """.formatted(sort);
+
+        List<PharmacyResponse> pharmacyResponses = new ArrayList<>();
+
+        try (Connection conn = pool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(baseSql)) {
+
+            String like = "%" + (keyword == null ? "" : keyword.trim()) + "%";
+            ps.setString(1, like);
+            ps.setString(2, like);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    pharmacyResponse = new PharmacyResponse();
+                    PharmacyResponse pharmacyResponse = new PharmacyResponse();
                     pharmacyResponse.setId(rs.getLong("id"));
                     pharmacyResponse.setQuantity(rs.getInt("quantity"));
-                    pharmacyResponse.setExpirationDate(LocalDate.parse(rs.getString("expiration_date")));
-                    pharmacyResponse.setPurchaseDate(LocalDate.parse(rs.getString("purchase_date")));
+                    pharmacyResponse.setExpirationDate(
+                            rs.getDate("expiration_date").toLocalDate()
+                    );
+                    pharmacyResponse.setPurchaseDate(
+                            rs.getDate("purchase_date").toLocalDate()
+                    );
                     pharmacyResponse.setMedication(findMedicationById(rs.getLong("medication_id")));
                     pharmacyResponses.add(pharmacyResponse);
                 }
@@ -65,10 +107,20 @@ public class PharmacyDao {
         return pharmacyResponses;
     }
 
-    public PharmacyOverviewResponse findOverview(int page, int size, String sort, String keyword) throws SQLException {
-        List<PharmacyResponse> all = findAll(page, size, sort);
-        List<PharmacyResponse> recentlyBought = findAll(page, size, "purchase_date");
-        List<PharmacyResponse> expiringSoon = findAll(page, size, "expiration_date");
+    public PharmacyOverviewResponse findOverview(String sort, String keyword) throws SQLException {
+        // Основной список — с keyword
+        List<PharmacyResponse> all = findAll(sort, keyword);
+
+        // Блоки "Купили недавно" и "Заканчивается срок годности" — без keyword
+        List<PharmacyResponse> recentlyBought = findAll("purchase_date", null)
+                .stream()
+                .limit(4)
+                .toList();
+
+        List<PharmacyResponse> expiringSoon = findAll("expiration_date", null)
+                .stream()
+                .limit(4)
+                .toList();
 
         return new PharmacyOverviewResponse(all, recentlyBought, expiringSoon);
     }
@@ -185,8 +237,7 @@ public class PharmacyDao {
                     if (request.getImage() != null) {
                         ps.setString(3, request.getImage());
                         ps.setLong(4, request.getId());
-                    }
-                    else {
+                    } else {
                         ps.setLong(3, request.getId());
                     }
                     ps.executeUpdate();

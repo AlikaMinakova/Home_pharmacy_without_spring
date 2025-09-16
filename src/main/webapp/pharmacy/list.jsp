@@ -51,6 +51,61 @@
         </c:forEach>
     </div>
 
+    <c:if test="${totalPages > 1}">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-4">
+
+                <!-- Кнопка "назад" -->
+                <!-- Кнопка "назад" -->
+                <li class="page-item ${currentPage == 0 ? 'disabled' : ''}">
+                    <a class="page-link"
+                       href="?page=${currentPage - 1}&size=${pageSize}&sort=${sort}&keyword=${keyword}">‹</a>
+                </li>
+
+                <c:set var="start" value="${currentPage - 2 lt 0 ? 0 : currentPage - 2}" />
+                <c:set var="end" value="${currentPage + 2 gt totalPages - 1 ? totalPages - 1 : currentPage + 2}" />
+
+                <!-- Всегда первая страница -->
+                <c:if test="${start > 0}">
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page=0&size=${pageSize}&sort=${sort}&keyword=${keyword}">1</a>
+                    </li>
+                    <c:if test="${start > 1}">
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    </c:if>
+                </c:if>
+
+                <!-- Страницы вокруг текущей -->
+                <c:forEach var="i" begin="${start}" end="${end}">
+                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                        <a class="page-link"
+                           href="?page=${i}&size=${pageSize}&sort=${sort}&keyword=${keyword}">${i + 1}</a>
+                    </li>
+                </c:forEach>
+
+                <!-- Последняя страница -->
+                <c:if test="${end < totalPages - 1}">
+                    <c:if test="${end < totalPages - 2}">
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    </c:if>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page=${totalPages - 1}&size=${pageSize}&sort=${sort}&keyword=${keyword}">
+                                ${totalPages}
+                        </a>
+                    </li>
+                </c:if>
+
+                <!-- Кнопка "вперёд" -->
+                <li class="page-item ${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                    <a class="page-link"
+                       href="?page=${currentPage + 1}&size=${pageSize}&sort=${sort}&keyword=${keyword}">›</a>
+                </li>
+            </ul>
+        </nav>
+    </c:if>
+
     <!-- Купили недавно -->
     <h4 class="fw-bold mb-4">Купили недавно</h4>
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mb-5">

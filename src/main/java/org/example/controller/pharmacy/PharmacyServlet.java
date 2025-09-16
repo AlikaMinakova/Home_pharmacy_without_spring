@@ -36,11 +36,17 @@ public class PharmacyServlet extends HttpServlet {
         String sort = req.getParameter("sort") != null ? req.getParameter("sort") : "expiration_date";
 
         try {
-            PharmacyOverviewResponse overview = pharmacyService.getPharmacyOverview(page, size, sort, keyword);
-
+            PharmacyOverviewResponse overview = pharmacyService.getPharmacyOverview(sort, keyword);
+            int lenght = overview.getAll().size();
+            int fromIndex = Math.min(page * size, overview.getAll().size());
+            int toIndex = Math.min(fromIndex + size, overview.getAll().size());
+            overview.setAll(overview.getAll().subList(fromIndex, toIndex));
             req.setAttribute("pharmacyPage", overview);
+            req.setAttribute("currentPage", page);
+            req.setAttribute("pageSize", size);
             req.setAttribute("keyword", keyword);
             req.setAttribute("sort", sort);
+            req.setAttribute("totalPages", (int) Math.ceil((double) lenght / size));
 
             req.getRequestDispatcher("/pharmacy/list.jsp").forward(req, resp);
         } catch (SQLException e) {

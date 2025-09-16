@@ -24,8 +24,8 @@ public class PharmacyService {
         this.diseaseDao = diseaseDao;
     }
 
-    public PharmacyOverviewResponse getPharmacyOverview(int page, int size, String sort, String keyword) throws SQLException {
-        return pharmacyDao.findOverview(page, size, sort, keyword);
+    public PharmacyOverviewResponse getPharmacyOverview(String sort, String keyword) throws SQLException {
+        return pharmacyDao.findOverview(sort, keyword);
     }
 
     public MedicationResponse findMedicationDetailByPharmacyId(Long id) throws SQLException {
