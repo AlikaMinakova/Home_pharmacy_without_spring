@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <jsp:include page="/fragments/header.jsp" />
+    <jsp:include page="../fragments/header.jsp" />
 </head>
 <body>
 <div class="container my-5 content">

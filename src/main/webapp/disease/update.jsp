@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <jsp:include page="/fragments/header.jsp" />
+    <jsp:include page="../fragments/header.jsp" />
 </head>
 <body>
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <jsp:include page="/fragments/header.jsp"/>
+    <jsp:include page="../fragments/header.jsp"/>
 </head>
 <body>
 <div class="container my-5 content">
@@ -100,6 +100,7 @@
         </div>
 
         <button type="submit" class="btn btn-save px-4">Создать</button>
+        <p></p>
     </form>
 </div>
 </body>

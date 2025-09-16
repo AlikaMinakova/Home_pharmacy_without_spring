@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <jsp:include page="/fragments/header.jsp"/>
+    <jsp:include page="../fragments/header.jsp"/>
 </head>
 <body>
 <div class="container my-5 content">
@@ -107,6 +107,7 @@
 
         <button type="submit" class="btn btn-save px-4">Обновить</button>
         <a href="${pageContext.request.contextPath}/pharmacies" class="btn btn-cancel px-4">Отмена</a>
+        <p></p>
     </form>
 </div>
 
